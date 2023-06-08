@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>{% block title %}IIOTCA Smart Doorbell{% endblock %}</title>
+      {% load bootstrap5 %}
+      {% bootstrap_css %}
+      {% bootstrap_javascript %}
+    </head>
+
+    <body style="background-color: #cfcccc">
+        <div class="container">
+          <ul class="nav bg-info" style="padding-left: 30px; width:96em; height: 3em; margin-left: -8em; background-color:#9e4002!important">
+            <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">NEW ENTRIES</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">GREENLIST</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">BLACKLIST</a>
+            </li>
+          </ul>
+
+            <div class="nav bg-info" style="padding-left: 30px; width:96em; height: 35em; margin-left: -8em; background-color:black!important">
+                <img src="static/cat_doorbell.gif" class="img-fluid" style="width:50em; height: 35em; margin-left: 45em" alt="Cat meowing in front of door camera">
+                <img src="static/grad.png" class="img-fluid" style="width:30em; height: 35em; margin-left: 45em; margin-top: -35em" alt="Cat meowing in front of door camera">
+                <p class="fw-light" style="color: white; margin-top: -8em; margin-left: 30px; font-size: 60px">This is your friendly</p>
+                <p class="fw-light" style="color: white; margin-top: -7em; margin-left: -7em; font-size: 50px">Smart Doorbell archive</p>
+                <p class="fw-light" style="color: white; margin-top: -7em; margin-left: -30em; font-size: 20px">Here you can manage who should enter your house (and your life)</p>
+            </div>
+
+            <div style="padding-top: 120px; margin-left: 44%">
+                <em class="fw-light" style="color: black; font-size: 30px">NEW ENTRIES</em>
+            </div>
+            <div style="padding-top: 50px; margin-left: 45%">
+                <em class="fw-light" style="color: black; font-size: 30px">GREENLIST</em>
+            </div>
+            <div style="padding-top: 50px; margin-left: 45.5%">
+                <em class="fw-light" style="color: black; font-size: 30px">BLACKLIST</em>
+            </div>
+{#          {% block content %}#}
+{#          {% endblock %}#}
+        </div>
+    </body>
+</html>
