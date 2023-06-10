@@ -18,6 +18,9 @@ display_new_entries = {}
 display_greenlist = {}
 name_greenlist = {}
 date_greenlist = {}
+display_blacklist = {}
+name_blacklist = {}
+date_blacklist = {}
 
 # config = {
 # 	'apiKey': "AIzaSyC-DF0lyMXYegJlpKiUrQFzFOMn6QtI_lo",
@@ -42,6 +45,7 @@ ref_act = db.reference('/actions')
 ref_lists = db.reference('/lists')
 ref_default = db.reference('/lists/default').get()
 ref_greenlist = db.reference('/lists/greenlist').get()
+ref_blacklist = db.reference('/lists/blacklist').get()
 
 default_bucket_list = bucket.list_blobs(prefix="DEFAULT/")
 for blob in default_bucket_list:
@@ -53,13 +57,17 @@ for blob in green_bucket_list:
     img_url = blob.generate_signed_url(datetime.timedelta(seconds=500000), method='GET')
     greenlist.append(img_url)
 
-# black_bucket_list = bucket.list_blobs(prefix="BLACKLIST/")
-# for blob in black_bucket_list:
-#     img_url = blob.generate_signed_url(datetime.timedelta(seconds=300), method='GET')
-#     blacklist.append(img_url)
+black_bucket_list = bucket.list_blobs(prefix="BLACKLIST/")
+for blob in black_bucket_list:
+    img_url = blob.generate_signed_url(datetime.timedelta(seconds=500000), method='GET')
+    blacklist.append(img_url)
+
+
 
 def index(request):
-    return render(request, 'index.html', {'images_url': url_list[:5], 'greenlist': greenlist[:5]})
+    return render(request, 'index.html', {'images_url': url_list[:5], 'greenlist': greenlist[:5], 'blacklist': blacklist[:5]})
+
+
 
 def new_entries(request):
     # special dict for displaying images on website, as well as tracking the image name
@@ -108,6 +116,8 @@ def new_entries(request):
     return render(request, 'new-entries.html', {'images_url': display_new_entries})
 
 
+
+
 def green_list(request):
     # special dict for displaying images on website, as well as tracking the image name
     for key, value in ref_greenlist.items():
@@ -126,3 +136,28 @@ def green_list(request):
         date_greenlist[key] = date_taken
 
     return render(request, 'green-list.html', {'greenlist': display_greenlist, 'name': name_greenlist, 'date': date_greenlist})
+
+
+
+
+def black_list(request):
+    # special dict for displaying images on website, as well as tracking the image name
+    if len(ref_blacklist) == 21:
+        return render(request, 'black-list.html', {'blacklist': display_blacklist, 'name': name_blacklist, 'date': date_blacklist})
+    else:
+        for key, value in ref_blacklist.items():
+            for keyval, val in value.items():
+                display_blacklist[key] = val
+                break
+
+        for key, value in ref_blacklist.items():
+            for keyval, val in value.items():
+                if str(keyval) == 'person_name':
+                    name_blacklist[key] = val
+
+        for key, value in ref_blacklist.items():
+            date_taken = str(key).strip("img_").replace('_', ', ')
+            date_taken = date_taken[::-1].replace('-', ':', 1)[::-1]
+            date_blacklist[key] = date_taken
+
+    return render(request, 'black-list.html', {'blacklist': display_blacklist, 'name': name_blacklist, 'date': date_blacklist})

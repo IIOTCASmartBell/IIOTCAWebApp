@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('new_entries', views.new_entries, name='new_entries'),
     path('green_list', views.green_list, name='green_list'),
+    path('black_list', views.black_list, name='black_list'),
 ]
