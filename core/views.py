@@ -93,6 +93,11 @@ def new_entries(request):
                 blob = bucket.blob(name_path_storage)
                 blob.upload_from_filename(local_file_path)
 
+                # delete from default in db (only if they're greenlist/blacklist)
+                if label == 'greenlist' or label == 'blacklist':
+                    ref_image.delete()
+                    display_new_entries.pop(key_img)
+
     return render(request, 'new-entries.html', {'images_url': display_new_entries})
 
 
