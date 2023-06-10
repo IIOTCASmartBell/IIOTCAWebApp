@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>{% block title %}IIOTCA Smart Doorbell{% endblock %}</title>
+      {% load bootstrap5 %}
+      {% bootstrap_css %}
+      {% bootstrap_javascript %}
+    </head>
+
+    <body style="background-color: #cfcccc">
+        <div class="container">
+          <ul class="nav bg-info" style="padding-left: 30px; width:96em; height: 3em; margin-left: -8em; background-color:#9e4002!important">
+            <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href='new_entries'>NEW ENTRIES</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">GREENLIST</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link link-light" style="color: #cfcccc" href="/">BLACKLIST</a>
+            </li>
+          </ul>
+
+
+            <div style="padding-top: 40px; margin-left: -10px">
+                <em class="fw-light" style="color: black; font-size: 30px">GREEN LISTED</em>
+                <div style="margin-top: 50px;">
+                    {% if greenlist %}
+                        {% for key, img in greenlist.items %}
+                            <div style="margin-bottom: 200px">
+                                <img class="ard-img-bottom class" style="width: 22%; height:22%; margin-bottom: 100px;" src="{{ img }}">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div style="margin-left: 500px">
+                        {% if name %}
+                        {% for key, name in name.items %}
+                            <div style="margin-top: -450px">
+                                <p>Name of the person: {{ name }}</p>
+                            </div>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if date %}
+                            {% for key, date in date.items %}
+                                <div style="margin-top: -10px">
+                                    <p>Picture taken on: {{ date }}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+{#          {% block content %}#}
+{#          {% endblock %}#}
+        </div>
+    </body>
+</html>
