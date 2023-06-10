@@ -92,11 +92,18 @@ def new_entries(request):
                 name_path_storage = label.upper() + '/' + key_img + '.jpg'
                 blob = bucket.blob(name_path_storage)
                 blob.upload_from_filename(local_file_path)
+                # change image link in database
+                ref_image = db.reference('/lists/' + label + '/' + key_img)
+                img_url_new = blob.generate_signed_url(datetime.timedelta(seconds=500000), method='GET')
+                ref_image.update({'img_link': img_url_new})
 
-                # delete from default in db (only if they're greenlist/blacklist)
+                # delete from default in db and storage (only if they're greenlist/blacklist!)
                 if label == 'greenlist' or label == 'blacklist':
                     ref_image.delete()
                     display_new_entries.pop(key_img)
+                    blob = bucket.blob('DEFAULT/' + key_img + '.jpg')
+                    print(blob)
+                    blob.delete()
 
     return render(request, 'new-entries.html', {'images_url': display_new_entries})
 
