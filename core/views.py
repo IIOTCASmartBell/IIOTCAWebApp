@@ -76,6 +76,10 @@ def new_entries(request):
             display_new_entries[key] = val
             break
 
+    # ref_image = db.reference('/lists/default/' + 'img_09-06-2023_17-52').get()['img_link']
+    # ref_latest = db.reference('/lists/latest').get()['img_link']
+    # print(str(ref_image) == str(ref_latest))
+
     if request.method == 'POST':
         # making use of the image name
         if 'image_key' in request.POST:
@@ -100,10 +104,18 @@ def new_entries(request):
                 name_path_storage = label.upper() + '/' + key_img + '.jpg'
                 blob = bucket.blob(name_path_storage)
                 blob.upload_from_filename(local_file_path)
+
                 # change image link in database
                 ref_image = db.reference('/lists/' + label + '/' + key_img)
                 img_url_new = blob.generate_signed_url(datetime.timedelta(seconds=500000), method='GET')
                 ref_image.update({'img_link': img_url_new})
+
+                # change image link in database for the latest entry
+                ref_latest = db.reference('/lists/latest')
+                img_link_dict = ref_latest.get()['img_link']
+                if img_link_dict == img_url:
+                    img_url_new = blob.generate_signed_url(datetime.timedelta(seconds=500000), method='GET')
+                    ref_latest.update({'img_link': img_url_new})
 
                 # delete from default in db and storage (only if they're greenlist/blacklist!)
                 if label == 'greenlist' or label == 'blacklist':
