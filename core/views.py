@@ -119,11 +119,12 @@ def new_entries(request):
 
                 # delete from default in db and storage (only if they're greenlist/blacklist!)
                 if label == 'greenlist' or label == 'blacklist':
+                    ref_image = db.reference('/lists/default/' + key_img)
                     ref_image.delete()
                     display_new_entries.pop(key_img)
-                    blob = bucket.blob('DEFAULT/' + key_img + '.jpg')
-                    print(blob)
-                    blob.delete()
+                #     blob = bucket.blob('DEFAULT/' + key_img + '.jpg')
+                #     print(blob)
+                #     blob.delete()
 
     return render(request, 'new-entries.html', {'images_url': display_new_entries})
 
