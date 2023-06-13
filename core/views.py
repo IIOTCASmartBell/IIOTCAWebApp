@@ -15,12 +15,7 @@ url_list = []
 greenlist = []
 blacklist = []
 display_new_entries = {}
-display_greenlist = {}
-name_greenlist = {}
-date_greenlist = {}
-display_blacklist = {}
-name_blacklist = {}
-date_blacklist = {}
+
 
 # config = {
 # 	'apiKey': "AIzaSyC-DF0lyMXYegJlpKiUrQFzFOMn6QtI_lo",
@@ -132,45 +127,56 @@ def new_entries(request):
 
 
 def green_list(request):
-    # special dict for displaying images on website, as well as tracking the image name
+    display_greenlist = []
+    name_greenlist = []
+    date_greenlist = []
+
     for key, value in ref_greenlist.items():
         for keyval, val in value.items():
-            display_greenlist[key] = val
+            display_greenlist.append(val)
             break
 
     for key, value in ref_greenlist.items():
         for keyval, val in value.items():
             if str(keyval) == 'person_name':
-                name_greenlist[key] = val
+                name_greenlist.append(val)
 
     for key, value in ref_greenlist.items():
         date_taken = str(key).strip("img_").replace('_', ', ')
         date_taken = date_taken[::-1].replace('-', ':', 1)[::-1]
-        date_greenlist[key] = date_taken
+        date_greenlist.append(date_taken)
 
-    return render(request, 'green-list.html', {'greenlist': display_greenlist, 'name': name_greenlist, 'date': date_greenlist})
+    zip_of_stuff = zip(display_greenlist, name_greenlist, date_greenlist)
+
+    return render(request, 'green-list.html', {'greenlist': zip_of_stuff})
 
 
 
 
 def black_list(request):
-    # special dict for displaying images on website, as well as tracking the image name
+    display_blacklist = []
+    name_blacklist = []
+    date_blacklist = []
+    zip_of_stuff = zip(display_blacklist, name_blacklist, date_blacklist)
+
     if len(ref_blacklist) == 21:
-        return render(request, 'black-list.html', {'blacklist': display_blacklist, 'name': name_blacklist, 'date': date_blacklist})
+        return render(request, 'black-list.html', {'blacklist':zip_of_stuff})
     else:
         for key, value in ref_blacklist.items():
             for keyval, val in value.items():
-                display_blacklist[key] = val
+                display_blacklist.append(val)
                 break
 
         for key, value in ref_blacklist.items():
             for keyval, val in value.items():
                 if str(keyval) == 'person_name':
-                    name_blacklist[key] = val
+                    name_blacklist.append(val)
 
         for key, value in ref_blacklist.items():
             date_taken = str(key).strip("img_").replace('_', ', ')
             date_taken = date_taken[::-1].replace('-', ':', 1)[::-1]
-            date_blacklist[key] = date_taken
+            date_blacklist.append(date_taken)
 
-    return render(request, 'black-list.html', {'blacklist': display_blacklist, 'name': name_blacklist, 'date': date_blacklist})
+        zip_of_stuff = zip(display_blacklist, name_blacklist, date_blacklist)
+
+    return render(request, 'black-list.html', {'blacklist': zip_of_stuff})
